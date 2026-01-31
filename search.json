@@ -1,0 +1,92 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Remington Neal: Cura 2026",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "This Quarto book is part of a Remington Manning-Neal’s BYU Life Sciences CURA project.\nThis project uses machine learning using Python’s SKLearn machine learning package too perform classification analysis on data collected by Chaston Lab in the PWS department and Lundwall Lab in the Psycology department.\nData includes is relative abundance of OTUs found within stool samples from children under the age of 3 with an elivated chance of having autism as well as a control population, and meta data about individuals in these two groups.\nMeta data about ADOs scores is used to identify if a child may be autisic and is used as a classification target for my analysis.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html",
+    "href": "random_forest_with_grid_search.html",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "",
+    "text": "2.1 Preface\nThis document is written using Quarto, a modern scientific documentation tool by Postix. This tool functions like Rmarkdown or Jupyter and actually uses those tools to run the documents. It provides flexability in rendering documents and intigrates well with Postix’s other product, R Studio.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html#imports",
+    "href": "random_forest_with_grid_search.html#imports",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "2.2 Imports",
+    "text": "2.2 Imports\n\nimport os\nfrom pathlib import Path\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport numpy as np\nimport yaml\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.metrics import\\\n     accuracy_score,\\\n     confusion_matrix,\\\n     f1_score, \\\n     make_scorer, \\\n     precision_recall_fscore_support\nfrom sklearn.model_selection import \\\n     GridSearchCV, \\\n     StratifiedKFold\nfrom sklearn.ensemble import RandomForestClassifier",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html#get-data",
+    "href": "random_forest_with_grid_search.html#get-data",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "2.3 Get Data",
+    "text": "2.3 Get Data\n\n2.3.1 Load Config\n\n# file_path = f\"{os.getcwd()}/random_forest_analysis.qmd\"\n# curr_path = Path(file_path).resolve().parent\n# os.chdir(curr_path)\n\nwith open('config.yaml', mode='r', encoding=None) as file:\n    config_data = yaml.safe_load(file)\n\nfigure_export = config_data[\"figure_export\"] # default true\ndata_sources = config_data[\"data\"]\nparam_grid = config_data[\"param_grid\"]\nhyperparameters = config_data[\"hyperparameters\"]\n\n\n\n2.3.2 Hyperparameters\nThese hyperparameters are established in the config.yaml file but can be overriden using command line values using -P variable:value -P othervariable:value syntax.\n\n# above tag allows parameters to be passed via cli\nrandomState = hyperparameters[\"random_state\"]\ntrainingSplit = hyperparameters[\"training_split\"]\nestimators = hyperparameters[\"estimators\"]\nn_jobs = hyperparameters[\"n_jobs\"]\n\n\n\n2.3.3 Load dataframes\n\nrarefiedData = pd.read_csv(data_sources[\"rarefied_table\"], sep=\"\\t\")\n\nmapper = pd.read_excel(data_sources[\"mapper\"], sheet_name=\"Mapper 2025-03-21\")\n\nrarefiedData = rarefiedData.T\nrarefiedData.columns = rarefiedData.iloc[0].values\nrarefiedData = rarefiedData.iloc[1:]",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html#create-training-and-testing-sets",
+    "href": "random_forest_with_grid_search.html#create-training-and-testing-sets",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "2.4 Create training and testing sets",
+    "text": "2.4 Create training and testing sets\n\n2.4.1 Combining rarefied and asd status\n\nadosClassification = mapper.loc[:, [\"IDnumber\", \"@SampleID\", \"ADOSClassification\"]]\n\nautismClassification = adosClassification\nautismClassification[\"ADOSClassification\"] = \\\n    adosClassification[\"ADOSClassification\"].astype(str)\nautismClassification = \\\n    autismClassification[autismClassification[\"ADOSClassification\"] != \"nan\"]\n\nautismClassification[\"Autism\"] = \\\n    autismClassification[\"ADOSClassification\"].transform(\n        lambda x: \"No\" if x == \"Minimal to No concern\" else \"Yes\"\n        )\nautismClassification = autismClassification.drop(\n    columns = [\"ADOSClassification\"]\n    )\n\nadosRarefiedData = pd.merge(\n    autismClassification, \n    rarefiedData, \n    left_on = \"@SampleID\", \n    right_index = True, how=\"inner\")\nadosRarefiedData\n\n/var/folders/0w/00j3lxtn6lq5n0jfhbsvrdd00000gn/T/ipykernel_6067/4062652752.py:9: SettingWithCopyWarning: \nA value is trying to be set on a copy of a slice from a DataFrame.\nTry using .loc[row_indexer,col_indexer] = value instead\n\nSee the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n  autismClassification[\"Autism\"] = \\\n\n\n\n\n\n\n\n\n\nIDnumber\n@SampleID\nAutism\n5fa6f990436cc98852c849cfc171976d\n9fc95dae73ec157e4f5ade5e0b205d51\nbf7ae65173c37bc3b210305f65760434\n523f0825433a02f5156e465f0972bc02\ncf87b63430ff2925721ab988ad584f83\n3c142dbbe6d67603d586ecb204a34cee\nec24451f7df9ad0d4edc00d327ba5b95\n...\na3b79adce4a953d4c1c8777dafc43a64\n86337e85ead9f35be4922027ed204e47\n4bfc0f32efe482acd73c942b8d7cd588\n35f42945e50c96278af7e268f124d56d\nd7656aada2e1e434542c5b7ed5592105\nd7bee6730fc4894b26aee43930e74710\n21d97d92de8f9fda7cc194d3245f039b\n304df219bf9ecbefbec639606e7bb98a\nf75aac2353d9e8da5f200c15cf7a564e\ne8dfa53470afb7592c0a10ecd09f758f\n\n\n\n\n0\n777-001\nasd965\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n1\n777-001\nasd966\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n6.2\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n2\n777-001\nasd1132\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n3\n777-001\nasd1133\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n10.8\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n4\n777-001\nasd1534\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n287\n888-029\nasd1407\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n288\n888-029\nasd1134\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n289\n888-029\nasd1135\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n290\n888-029\nasd1498\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n2.0\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n291\n888-029\nasd1499\nNo\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n3.2\n...\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n\n\n\n\n184 rows × 847 columns\n\n\n\n\n\n2.4.2 Dividing training and testing\nThe following cells divide the data into training and testing sets. In order to keep the data clean, samples collected from a single individual, the IDnumber column, are divided togeather to avoid data bleed.\n\n# filter IDnumber and Autism \n# Y = autism, X = IDnumber\n# filter whole table on IDnumber\n# select real X values\ntemp_data = adosRarefiedData.loc[:,[\"IDnumber\", \"Autism\"]]\ntemp_data = temp_data.drop_duplicates()\nX_temp = temp_data.loc[:, \"IDnumber\"]\ny_temp = temp_data.loc[:, \"Autism\"]\n\nX_train_temp, X_test_temp, y_train_temp, y_test_temp = \\\n    train_test_split(X_temp, y_temp, test_size=trainingSplit,random_state=randomState)\n\n\ntrain_data = adosRarefiedData[adosRarefiedData[\"IDnumber\"].isin(X_train_temp)]\ntest_data = adosRarefiedData[adosRarefiedData[\"IDnumber\"].isin(X_test_temp)]\n\nnot_in_y = [\"Autism\", \"IDnumber\", \"@SampleID\"]\n\ny_train, X_train = train_data[\"Autism\"].to_frame(), train_data.drop(columns = not_in_y)\ny_test, X_test = test_data[\"Autism\"].to_frame(), test_data.drop(columns = not_in_y)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html#training",
+    "href": "random_forest_with_grid_search.html#training",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "2.5 Training",
+    "text": "2.5 Training\nThe scaler rescales the features to fit between -1 and 1. This does not effect the outcome of the random forest but can help standardize inputs to increase efficiancy of training.\n\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test = scaler.transform(X_test)\n\ny_test = y_test.to_numpy().ravel()\ny_train = y_train.to_numpy().ravel()\n\nGridSearchCV allows to train multiple Random Forest classifiers using various combinations of hyperparameters. The number of models trained is equal to \\((\\prod_{i=0}^{n}{|h_{i}|})*cv\\) where \\(|h_{i}|\\) is the size of the param param_grid list and \\(cv\\) is the cross validation number. StratifiedKFold divides the training data into n “folds”. Each pass of training selects one of these folds to act as a validation set to track the model’s training. More information can be found here. 5 is an arbitrary value.\n\nclassifier = RandomForestClassifier(n_estimators=estimators, random_state=randomState)\ncustom_f1 = make_scorer(f1_score, pos_label='Yes')\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=randomState)\n\nsearch = GridSearchCV(\n    estimator=classifier,\n    n_jobs=n_jobs,\n    param_grid=param_grid,\n    cv=cv,\n    scoring=custom_f1)\nsearch.fit(X_train, y_train)\nsearch.best_estimator_.get_params()\n\n{'bootstrap': True,\n 'ccp_alpha': 0.0,\n 'class_weight': None,\n 'criterion': 'entropy',\n 'max_depth': None,\n 'max_features': None,\n 'max_leaf_nodes': None,\n 'max_samples': None,\n 'min_impurity_decrease': 0.0,\n 'min_samples_leaf': 1,\n 'min_samples_split': 2,\n 'min_weight_fraction_leaf': 0.0,\n 'monotonic_cst': None,\n 'n_estimators': 100,\n 'n_jobs': None,\n 'oob_score': False,\n 'random_state': 42,\n 'verbose': 0,\n 'warm_start': False}\n\n\n\n2.5.1 Prediction\n\ny_pred = search.predict(X_test)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "random_forest_with_grid_search.html#evaluations",
+    "href": "random_forest_with_grid_search.html#evaluations",
+    "title": "2  Random-Forest analysis of autism concern groups",
+    "section": "2.6 Evaluations",
+    "text": "2.6 Evaluations\nPrecision and recall are inversly preportional. Both values are combined in the F_beta score. F_beta is the harmonic mean of precision and recall scaled using the \\(\\beta\\) value. \\(\\beta\\) determines if precision or recall is weighted more in the final score. \\(\\beta = 1\\) equally balances both metrics; \\(\\beta &gt; 1\\) increases recalls weight and \\(\\beta &lt; 1\\) increases precisions weight. In this case, \\(\\beta\\) is set to 1.\n\n# Accuracy\naccuracy = accuracy_score(y_test, y_pred)\nprecision, recall, fscore, _ = \\\n    precision_recall_fscore_support(y_test, y_pred, average='weighted')\n\nprint(\n    f\"Accuracy: {accuracy * 100:.2f}%\\n\" \\\n    f\"Precision: {precision* 100:.2f}%\\n\" \\\n    f\"Recall: {recall* 100:.2f}%\\n\" \\\n    f\"F beta: {fscore:.2f}\"\n    )\n\n# Confusion Matrix\nconf_matrix = confusion_matrix(y_test, y_pred)\n\ntickLabels = [\"No Concern\", \"Mild-Severe Concern\"]\nplt.figure(figsize=(8, 6))\nsns.heatmap(conf_matrix, annot=True, fmt='g', cmap='Blues', cbar=False,\n            xticklabels=tickLabels, yticklabels=tickLabels)\n\nplt.title('Autism Predictions Confusion Matrix Heatmap')\nplt.xlabel('Predicted Labels')\nplt.ylabel('True Labels')\nplt.show()\n\nAccuracy: 76.32%\nPrecision: 58.24%\nRecall: 76.32%\nF beta: 0.66\n\n\n\n\n\n\n\n\n\nHere, we show the otu barcodes who most contributed to the best model’s predictions. A cut off of \\(0.1\\) is used to filter the most significant OTUs/features.\n\nbest_model = search.best_estimator_\nfeature_importances = best_model.feature_importances_\nimportant_indices = np.where(feature_importances &gt; 0.01)[0]\n\nfiltered_feature_importance = pd.DataFrame({\n    \"features\": rarefiedData.columns[important_indices],\n    \"importance\": feature_importances[important_indices]\n})\n\nplt.barh(filtered_feature_importance.features, filtered_feature_importance.importance)\nplt.xlabel('Feature Importance')\nplt.title('Feature Importance in Random Forest Classifier (above 1% importance)')\nplt.show()",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Random-Forest analysis of autism concern groups</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "3  Summary",
+    "section": "",
+    "text": "There are too few samples in our data set to create a model with significant predictive power. The groups present are also unbalanced decreasing the predictive power of our model.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  }
+]
