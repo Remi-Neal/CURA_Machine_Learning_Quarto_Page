@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2856674baca84357b564b63f0fb293a9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3778d3e438078121318a23701f9f68bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -123,14 +123,32 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism concern groups</span></span></a>
+  <a href="./asd_concern_random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism concern groups</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  <a href="./asd_concern_random_forest_with_pca_and_grid_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism concern groups, features reduced with PCA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./asd_likelihood_random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism likelihood groups</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./asd_likelihood_random_forest_with_pca_and_grid_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./figures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -149,7 +167,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#models-used" id="toc-models-used" class="nav-link" data-scroll-target="#models-used">Models used</a>
+  <ul class="collapse">
+  <li><a href="#random-forest-classification" id="toc-random-forest-classification" class="nav-link" data-scroll-target="#random-forest-classification">Random Forest Classification</a></li>
+  <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca">PCA</a></li>
+  <li><a href="#scaler" id="toc-scaler" class="nav-link" data-scroll-target="#scaler">Scaler</a></li>
+  <li><a href="#grid-search" id="toc-grid-search" class="nav-link" data-scroll-target="#grid-search">Grid Search</a></li>
+  </ul></li>
+  <li><a href="#evaluations" id="toc-evaluations" class="nav-link" data-scroll-target="#evaluations">Evaluations</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -189,10 +218,38 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<p>This is a Quarto book.</p>
-<p>To learn more about Quarto books visit <a href="https://quarto.org/docs/books" class="uri">https://quarto.org/docs/books</a>.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>This book is the result of various machine learning trials using microbiome data collected by Dr.&nbsp;Chaston and Dr.&nbsp;Lundwall of BYU. This is a preliminary analysis and should not be seen as a finalized analysis.</p>
+<p>Machine learning models were trained on fractional abundance of OTUs collected as part of a study involving children with elivated likelihoods have haveing ASD. Models were trained using the fractional abundance to predict various</p>
+</section>
+<section id="models-used" class="level2">
+<h2 class="anchored" data-anchor-id="models-used">Models used</h2>
+<section id="random-forest-classification" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-classification">Random Forest Classification</h3>
+<p>This is the primary classification tool used. A random forest classifier is an ensamble of binary classification trees. Features are bootstrap sampled and given to classifications trees to predict the class the feature belongs to. After each tree has made it’s prediction, the results are combined to determine the model’s final answer.</p>
+<p>Each tree’s final prediction is weighted so some trees have more say in the final result than others. This allows researchers to analize each trees weight to determine which feature has the most predictive power within the model.</p>
+</section>
+<section id="pca" class="level3">
+<h3 class="anchored" data-anchor-id="pca">PCA</h3>
+<p>Principle Component Analysis, PCA, uses linear algebra to recuce the number of features used to analyze. PCA is used in these analysis to reduce the number of features and increase the predictive power of the random forest classifier.</p>
+</section>
+<section id="scaler" class="level3">
+<h3 class="anchored" data-anchor-id="scaler">Scaler</h3>
+<p>The scaler restricts the features values to be between -1 and 1. This standardization does not modify the relationship between values but transformes then to help the model increase predictive power.</p>
+</section>
+<section id="grid-search" class="level3">
+<h3 class="anchored" data-anchor-id="grid-search">Grid Search</h3>
+<p>Grid search is not a machine learning model but a wrapper around models allowing researchers to train multiple models with different hyperparameters to create a model that best fits a given metric (precision, recall, accuracy, etc.).</p>
+</section>
+</section>
+<section id="evaluations" class="level2">
+<h2 class="anchored" data-anchor-id="evaluations">Evaluations</h2>
+<p>Models are evaluated on 6 different metrics: 1. Accuracy - the percent of correct predictions 2. Precision - the percent of true positives given all positive predictions 3. Recall - the percent of true positives given all true values 4. F-beta - the harmonic mean between precision and recall 5. McNemar’s test - a chi squared metric created using the false positive and false negative predictions 6. p-value: a p-value created based on the chi squared statistic from McNemar’s test</p>
+<p>All equations for each evaluation statistic can be found in the supplamentary section.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
