@@ -8,7 +8,7 @@
 
 <meta name="author" content="Remington Manning-Neal">
 
-<title>2&nbsp; Basic Random-Forest analysis of autism concern groups – Remington Neal: Cura 2026</title>
+<title>4&nbsp; Random-Forest analysis of autism likelihood groups, features reduced with PCA – Remington Neal: Cura 2026</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./asd_concern_random_forest_with_pca_and_grid_search.html" rel="next">
-<link href="./intro.html" rel="prev">
+<link href="./asd_likelihood_random_forest_with_grid_search.html" rel="next">
+<link href="./asd_concern_random_forest_with_pca_and_grid_search.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -151,7 +151,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./asd_concern_random_forest_with_grid_search.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism concern groups</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -190,7 +190,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./asd_concern_random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link active">
+  <a href="./asd_concern_random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism concern groups</span></span></a>
   </div>
 </li>
@@ -202,7 +202,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html" class="sidebar-item-text sidebar-link">
+  <a href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span></a>
   </div>
 </li>
@@ -240,24 +240,24 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface"><span class="header-section-number">2.1</span> Preface</a></li>
-  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports"><span class="header-section-number">2.2</span> Imports</a></li>
-  <li><a href="#get-data" id="toc-get-data" class="nav-link" data-scroll-target="#get-data"><span class="header-section-number">2.3</span> Get Data</a>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface"><span class="header-section-number">4.1</span> Preface</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports"><span class="header-section-number">4.2</span> Imports</a></li>
+  <li><a href="#get-data" id="toc-get-data" class="nav-link" data-scroll-target="#get-data"><span class="header-section-number">4.3</span> Get Data</a>
   <ul class="collapse">
-  <li><a href="#load-config" id="toc-load-config" class="nav-link" data-scroll-target="#load-config"><span class="header-section-number">2.3.1</span> Load Config</a></li>
-  <li><a href="#hyperparameters" id="toc-hyperparameters" class="nav-link" data-scroll-target="#hyperparameters"><span class="header-section-number">2.3.2</span> Hyperparameters</a></li>
-  <li><a href="#load-dataframes" id="toc-load-dataframes" class="nav-link" data-scroll-target="#load-dataframes"><span class="header-section-number">2.3.3</span> Load dataframes</a></li>
+  <li><a href="#load-config" id="toc-load-config" class="nav-link" data-scroll-target="#load-config"><span class="header-section-number">4.3.1</span> Load Config</a></li>
+  <li><a href="#hyperparameters" id="toc-hyperparameters" class="nav-link" data-scroll-target="#hyperparameters"><span class="header-section-number">4.3.2</span> Hyperparameters</a></li>
+  <li><a href="#load-dataframes" id="toc-load-dataframes" class="nav-link" data-scroll-target="#load-dataframes"><span class="header-section-number">4.3.3</span> Load dataframes</a></li>
   </ul></li>
-  <li><a href="#create-training-and-testing-sets" id="toc-create-training-and-testing-sets" class="nav-link" data-scroll-target="#create-training-and-testing-sets"><span class="header-section-number">2.4</span> Create training and testing sets</a>
+  <li><a href="#create-training-and-testing-sets" id="toc-create-training-and-testing-sets" class="nav-link" data-scroll-target="#create-training-and-testing-sets"><span class="header-section-number">4.4</span> Create training and testing sets</a>
   <ul class="collapse">
-  <li><a href="#combining-rarefied-and-asd-status" id="toc-combining-rarefied-and-asd-status" class="nav-link" data-scroll-target="#combining-rarefied-and-asd-status"><span class="header-section-number">2.4.1</span> Combining rarefied and asd status</a></li>
-  <li><a href="#dividing-training-and-testing" id="toc-dividing-training-and-testing" class="nav-link" data-scroll-target="#dividing-training-and-testing"><span class="header-section-number">2.4.2</span> Dividing training and testing</a></li>
+  <li><a href="#combining-rarefied-and-asd-status" id="toc-combining-rarefied-and-asd-status" class="nav-link" data-scroll-target="#combining-rarefied-and-asd-status"><span class="header-section-number">4.4.1</span> Combining rarefied and asd status</a></li>
+  <li><a href="#dividing-training-and-testing" id="toc-dividing-training-and-testing" class="nav-link" data-scroll-target="#dividing-training-and-testing"><span class="header-section-number">4.4.2</span> Dividing training and testing</a></li>
   </ul></li>
-  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training"><span class="header-section-number">2.5</span> Training</a>
+  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training"><span class="header-section-number">4.5</span> Training</a>
   <ul class="collapse">
-  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">2.5.1</span> Prediction</a></li>
+  <li><a href="#prediction" id="toc-prediction" class="nav-link" data-scroll-target="#prediction"><span class="header-section-number">4.5.1</span> Prediction</a></li>
   </ul></li>
-  <li><a href="#evaluations" id="toc-evaluations" class="nav-link" data-scroll-target="#evaluations"><span class="header-section-number">2.6</span> Evaluations</a></li>
+  <li><a href="#evaluations" id="toc-evaluations" class="nav-link" data-scroll-target="#evaluations"><span class="header-section-number">4.6</span> Evaluations</a></li>
   </ul>
 </nav>
     </div>
@@ -266,7 +266,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism concern groups</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></h1>
 <p class="subtitle lead">Machine learning analysis utilizing SKLearn’s Random Forest classifier and Grid Search of ASD Microbiome data</p>
 </div>
 
@@ -290,13 +290,13 @@ window.Quarto = {
 </header>
 
 
-<section id="preface" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="preface"><span class="header-section-number">2.1</span> Preface</h2>
+<section id="preface" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="preface"><span class="header-section-number">4.1</span> Preface</h2>
 <p>This document is written using Quarto, a modern scientific documentation tool by Postix. This tool functions like Rmarkdown or Jupyter and actually uses those tools to run the documents. It provides flexability in rendering documents and intigrates well with Posit’s other product, R Studio.</p>
 </section>
-<section id="imports" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">2.2</span> Imports</h2>
-<div id="5bc63aa3" class="cell" data-execution_count="1">
+<section id="imports" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">4.2</span> Imports</h2>
+<div id="95db078b" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -305,13 +305,13 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span><span class="op">\</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>     accuracy_score,<span class="op">\</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>     confusion_matrix,<span class="op">\</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     f1_score, <span class="op">\</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>     recall_score, <span class="op">\</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> <span class="op">\</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>     accuracy_score,<span class="op">\</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     confusion_matrix,<span class="op">\</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>     f1_score, <span class="op">\</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>     make_scorer, <span class="op">\</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>     precision_recall_fscore_support</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> <span class="op">\</span></span>
@@ -321,12 +321,12 @@ window.Quarto = {
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="get-data" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="get-data"><span class="header-section-number">2.3</span> Get Data</h2>
-<section id="load-config" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="load-config"><span class="header-section-number">2.3.1</span> Load Config</h3>
+<section id="get-data" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="get-data"><span class="header-section-number">4.3</span> Get Data</h2>
+<section id="load-config" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="load-config"><span class="header-section-number">4.3.1</span> Load Config</h3>
 <p>Loading data into env</p>
-<div id="842d3dec" class="cell" data-execution_count="2">
+<div id="c232d448" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'config.yaml'</span>, mode<span class="op">=</span><span class="st">'r'</span>, encoding<span class="op">=</span><span class="va">None</span>) <span class="im">as</span> f:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    config_data <span class="op">=</span> yaml.safe_load(f)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -336,7 +336,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>hyperparameters <span class="op">=</span> config_data[<span class="st">"hyperparameters"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Yaml config data</p>
-<div id="6e7120e8" class="cell" data-execution_count="3">
+<div id="5292a49a" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>figure_export: true
 data:
@@ -365,20 +365,21 @@ param_grid:
 </div>
 </div>
 </section>
-<section id="hyperparameters" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="hyperparameters"><span class="header-section-number">2.3.2</span> Hyperparameters</h3>
+<section id="hyperparameters" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="hyperparameters"><span class="header-section-number">4.3.2</span> Hyperparameters</h3>
 <p>These hyperparameters are established in the <code>config.yaml</code> file but can be overriden using command line values using <code>-P variable:value -P othervariable:value</code> syntax.</p>
-<div id="e8e129b4" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="4">
+<div id="e754dd2a" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># above tag allows parameters to be passed via cli</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>randomState <span class="op">=</span> hyperparameters[<span class="st">"random_state"</span>]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>trainingSplit <span class="op">=</span> hyperparameters[<span class="st">"training_split"</span>]</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>estimators <span class="op">=</span> hyperparameters[<span class="st">"estimators"</span>]</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>n_jobs <span class="op">=</span> hyperparameters[<span class="st">"n_jobs"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>estimators <span class="op">=</span> hyperparameters[<span class="st">"estimators"</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n_components <span class="op">=</span> hyperparameters[<span class="st">"n_components"</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>n_jobs <span class="op">=</span> hyperparameters[<span class="st">"n_jobs"</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>randomState <span class="op">=</span> hyperparameters[<span class="st">"random_state"</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>trainingSplit <span class="op">=</span> hyperparameters[<span class="st">"training_split"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="load-dataframes" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="load-dataframes"><span class="header-section-number">2.3.3</span> Load dataframes</h3>
-<div id="262b3f59" class="cell" data-execution_count="5">
+<section id="load-dataframes" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="load-dataframes"><span class="header-section-number">4.3.3</span> Load dataframes</h3>
+<div id="7a4719a2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rarefiedData <span class="op">=</span> pd.read_csv(data_sources[<span class="st">"rarefied_table"</span>], sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mapper <span class="op">=</span> pd.read_excel(data_sources[<span class="st">"mapper"</span>], sheet_name<span class="op">=</span><span class="st">"Mapper 2025-03-21"</span>)</span>
@@ -389,45 +390,356 @@ param_grid:
 </div>
 </section>
 </section>
-<section id="create-training-and-testing-sets" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="create-training-and-testing-sets"><span class="header-section-number">2.4</span> Create training and testing sets</h2>
-<section id="combining-rarefied-and-asd-status" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="combining-rarefied-and-asd-status"><span class="header-section-number">2.4.1</span> Combining rarefied and asd status</h3>
-<div id="92c4a7d8" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adosClassification <span class="op">=</span> mapper.loc[:, [<span class="st">"IDnumber"</span>, <span class="st">"@SampleID"</span>, <span class="st">"ADOSClassification"</span>]]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filters out any potential stray IDs not part of out two groups</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>adosClassification <span class="op">=</span> adosClassification[adosClassification[<span class="st">"IDnumber"</span>].<span class="bu">str</span>.contains(<span class="st">'^[777|888]'</span>)]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> adosClassification</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>autismClassification[<span class="st">"ADOSClassification"</span>] <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    adosClassification[<span class="st">"ADOSClassification"</span>].astype(<span class="bu">str</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    autismClassification[autismClassification[<span class="st">"ADOSClassification"</span>] <span class="op">!=</span> <span class="st">"nan"</span>]</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>autismClassification[<span class="st">"Autism"</span>] <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    autismClassification[<span class="st">"ADOSClassification"</span>].transform(</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: <span class="dv">0</span> <span class="cf">if</span> x <span class="op">==</span> <span class="st">"Minimal to No concern"</span> <span class="cf">else</span> <span class="dv">1</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> autismClassification.drop(</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> [<span class="st">"ADOSClassification"</span>]</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>adosRarefiedData <span class="op">=</span> pd.merge(</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    autismClassification, </span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    rarefiedData, </span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    left_on <span class="op">=</span> <span class="st">"@SampleID"</span>, </span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    right_index <span class="op">=</span> <span class="va">True</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>adosRarefiedData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="create-training-and-testing-sets" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="create-training-and-testing-sets"><span class="header-section-number">4.4</span> Create training and testing sets</h2>
+<section id="combining-rarefied-and-asd-status" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="combining-rarefied-and-asd-status"><span class="header-section-number">4.4.1</span> Combining rarefied and asd status</h3>
+<p>Filtering features that aren’t present in at least 20% of samples</p>
+<div id="2016922c" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reads_frac_per_otu <span class="op">=</span> rarefiedData.<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="bu">sum</span>(x <span class="op">!=</span> <span class="dv">0</span>)<span class="op">/</span><span class="bu">len</span>(x), axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>reads_frac_per_otu.name <span class="op">=</span> <span class="st">"frac"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>reads_frac_per_otu <span class="op">=</span> reads_frac_per_otu[reads_frac_per_otu <span class="op">&gt;=</span> <span class="fl">0.2</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reads_frac_per_otu = pd.merge(reads_frac_per_otu, data, left_index=True, right_index=True).iloc[:,:2]</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>filtered_otus <span class="op">=</span> rarefiedData[reads_frac_per_otu.index]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>filtered_otus</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ec24451f7df9ad0d4edc00d327ba5b95</th>
+<th data-quarto-table-cell-role="th">e6ca0ab8a0fd77337495add040a424b1</th>
+<th data-quarto-table-cell-role="th">29e46f338ff994729661c0c36dcb9952</th>
+<th data-quarto-table-cell-role="th">295b32a51421d1758d6bab8ecea6dd18</th>
+<th data-quarto-table-cell-role="th">ae3d0d004da3a7ca7ecbe69fb52084a1</th>
+<th data-quarto-table-cell-role="th">a7e9c4d158f9305597f3297c658e7f63</th>
+<th data-quarto-table-cell-role="th">dd658eb3e9a1f20b35812c4b9eebefc5</th>
+<th data-quarto-table-cell-role="th">18034589f32b77d60fce94836eda6e7e</th>
+<th data-quarto-table-cell-role="th">63b779c3cd79ac43fa4754ffee022f37</th>
+<th data-quarto-table-cell-role="th">4551087c7333dad3afc7bb73fda68a16</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">b1490ce4fd364d812f89c929941636e2</th>
+<th data-quarto-table-cell-role="th">77c6e4c581ab64246fd874fd4a032e96</th>
+<th data-quarto-table-cell-role="th">67e9678fbfd7b0f356cc3752d9018107</th>
+<th data-quarto-table-cell-role="th">01a39f312d4e84cef622982a2f50caee</th>
+<th data-quarto-table-cell-role="th">ba3bd91a301ad07fadcd548998158ee0</th>
+<th data-quarto-table-cell-role="th">ebe2bfb54ac2de1a404c6411b84abaa7</th>
+<th data-quarto-table-cell-role="th">160a294a1d67863cc2478274e2c109dd</th>
+<th data-quarto-table-cell-role="th">61f32bb71bb64e24c18e4fb16d193ace</th>
+<th data-quarto-table-cell-role="th">99eadd313db591f693de8906fa27c861</th>
+<th data-quarto-table-cell-role="th">637ab58cbef03d24007dd234008954d4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd1001</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>48.7</td>
+<td>5.9</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>78.7</td>
+<td>3.5</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.2</td>
+<td>0.0</td>
+<td>5.7</td>
+<td>50.9</td>
+<td>0.0</td>
+<td>23.6</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">asd1002</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>603.7</td>
+<td>422.7</td>
+<td>128.5</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>259.6</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>12.4</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd1004</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>37.9</td>
+<td>0.0</td>
+<td>2.1</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">asd1005</th>
+<td>0.0</td>
+<td>2.8</td>
+<td>21.5</td>
+<td>8.4</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>11.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.3</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>45.9</td>
+<td>454.2</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd1006</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>59.4</td>
+<td>0.0</td>
+<td>15.2</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>38.3</td>
+<td>51.7</td>
+<td>10.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>9.5</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>124.3</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.3</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd995</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>686.8</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.8</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>28.7</td>
+<td>0.0</td>
+<td>12.2</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>212.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">asd996</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>35.5</td>
+<td>0.0</td>
+<td>29.6</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>3.2</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd997</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>6.2</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>118.7</td>
+<td>0.0</td>
+<td>24.8</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>17.9</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">asd998</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>5.4</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">asd999</th>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.7</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>5.1</td>
+<td>0.7</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>272 rows × 92 columns</p>
+</div>
+</div>
+</div>
+<div id="4f92d042" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>adosClassification <span class="op">=</span> mapper.loc[:, [<span class="st">"IDnumber"</span>, <span class="st">"@SampleID"</span>, <span class="st">"ADOSClassification"</span>]]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filters out any potential stray IDs not part of out two groups</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>adosClassification <span class="op">=</span> adosClassification[adosClassification[<span class="st">"IDnumber"</span>].<span class="bu">str</span>.contains(<span class="st">'^[777|888]'</span>)]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> adosClassification</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>autismClassification[<span class="st">"ADOSClassification"</span>] <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    adosClassification[<span class="st">"ADOSClassification"</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    autismClassification[autismClassification[<span class="st">"ADOSClassification"</span>] <span class="op">!=</span> <span class="st">"nan"</span>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>autismClassification[<span class="st">"Autism"</span>] <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    autismClassification[<span class="st">"ADOSClassification"</span>].transform(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: <span class="dv">0</span> <span class="cf">if</span> x <span class="op">==</span> <span class="st">"Minimal to No concern"</span> <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> autismClassification.drop(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> [<span class="st">"ADOSClassification"</span>]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>adosRarefiedData <span class="op">=</span> pd.merge(</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    autismClassification, </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    filtered_otus, </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    left_on <span class="op">=</span> <span class="st">"@SampleID"</span>, </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    right_index <span class="op">=</span> <span class="va">True</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>adosRarefiedData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/0w/00j3lxtn6lq5n0jfhbsvrdd00000gn/T/ipykernel_79813/3272697402.py:12: SettingWithCopyWarning: 
+<pre><code>/var/folders/0w/00j3lxtn6lq5n0jfhbsvrdd00000gn/T/ipykernel_79731/630839910.py:12: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   autismClassification["Autism"] = \</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -438,24 +750,24 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">IDnumber</th>
 <th data-quarto-table-cell-role="th">@SampleID</th>
 <th data-quarto-table-cell-role="th">Autism</th>
-<th data-quarto-table-cell-role="th">5fa6f990436cc98852c849cfc171976d</th>
-<th data-quarto-table-cell-role="th">9fc95dae73ec157e4f5ade5e0b205d51</th>
-<th data-quarto-table-cell-role="th">bf7ae65173c37bc3b210305f65760434</th>
-<th data-quarto-table-cell-role="th">523f0825433a02f5156e465f0972bc02</th>
-<th data-quarto-table-cell-role="th">cf87b63430ff2925721ab988ad584f83</th>
-<th data-quarto-table-cell-role="th">3c142dbbe6d67603d586ecb204a34cee</th>
 <th data-quarto-table-cell-role="th">ec24451f7df9ad0d4edc00d327ba5b95</th>
+<th data-quarto-table-cell-role="th">e6ca0ab8a0fd77337495add040a424b1</th>
+<th data-quarto-table-cell-role="th">29e46f338ff994729661c0c36dcb9952</th>
+<th data-quarto-table-cell-role="th">295b32a51421d1758d6bab8ecea6dd18</th>
+<th data-quarto-table-cell-role="th">ae3d0d004da3a7ca7ecbe69fb52084a1</th>
+<th data-quarto-table-cell-role="th">a7e9c4d158f9305597f3297c658e7f63</th>
+<th data-quarto-table-cell-role="th">dd658eb3e9a1f20b35812c4b9eebefc5</th>
 <th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">a3b79adce4a953d4c1c8777dafc43a64</th>
-<th data-quarto-table-cell-role="th">86337e85ead9f35be4922027ed204e47</th>
-<th data-quarto-table-cell-role="th">4bfc0f32efe482acd73c942b8d7cd588</th>
-<th data-quarto-table-cell-role="th">35f42945e50c96278af7e268f124d56d</th>
-<th data-quarto-table-cell-role="th">d7656aada2e1e434542c5b7ed5592105</th>
-<th data-quarto-table-cell-role="th">d7bee6730fc4894b26aee43930e74710</th>
-<th data-quarto-table-cell-role="th">21d97d92de8f9fda7cc194d3245f039b</th>
-<th data-quarto-table-cell-role="th">304df219bf9ecbefbec639606e7bb98a</th>
-<th data-quarto-table-cell-role="th">f75aac2353d9e8da5f200c15cf7a564e</th>
-<th data-quarto-table-cell-role="th">e8dfa53470afb7592c0a10ecd09f758f</th>
+<th data-quarto-table-cell-role="th">b1490ce4fd364d812f89c929941636e2</th>
+<th data-quarto-table-cell-role="th">77c6e4c581ab64246fd874fd4a032e96</th>
+<th data-quarto-table-cell-role="th">67e9678fbfd7b0f356cc3752d9018107</th>
+<th data-quarto-table-cell-role="th">01a39f312d4e84cef622982a2f50caee</th>
+<th data-quarto-table-cell-role="th">ba3bd91a301ad07fadcd548998158ee0</th>
+<th data-quarto-table-cell-role="th">ebe2bfb54ac2de1a404c6411b84abaa7</th>
+<th data-quarto-table-cell-role="th">160a294a1d67863cc2478274e2c109dd</th>
+<th data-quarto-table-cell-role="th">61f32bb71bb64e24c18e4fb16d193ace</th>
+<th data-quarto-table-cell-role="th">99eadd313db591f693de8906fa27c861</th>
+<th data-quarto-table-cell-role="th">637ab58cbef03d24007dd234008954d4</th>
 </tr>
 </thead>
 <tbody>
@@ -467,18 +779,18 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>278.0</td>
+<td>6.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>3.2</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>43.9</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>90.6</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -488,21 +800,21 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>777-001</td>
 <td>asd966</td>
 <td>0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
 <td>6.2</td>
+<td>0.0</td>
+<td>14.4</td>
+<td>289.2</td>
+<td>17.6</td>
+<td>0.0</td>
+<td>3.9</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>89.0</td>
+<td>30.5</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>142.1</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -514,20 +826,20 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>16.2</td>
+<td>201.4</td>
+<td>64.2</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>60.5</td>
+<td>33.8</td>
+<td>14.3</td>
+<td>36.3</td>
+<td>7.1</td>
 <td>0.0</td>
 <td>0.0</td>
 </tr>
@@ -536,22 +848,22 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>777-001</td>
 <td>asd1133</td>
 <td>0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
 <td>10.8</td>
+<td>0.0</td>
+<td>81.6</td>
+<td>352.5</td>
+<td>9.7</td>
+<td>0.0</td>
+<td>6.1</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>190.0</td>
+<td>38.6</td>
+<td>86.9</td>
+<td>110.0</td>
+<td>9.8</td>
 <td>0.0</td>
 <td>0.0</td>
 </tr>
@@ -562,19 +874,19 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>69.2</td>
+<td>244.4</td>
+<td>26.6</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>164.5</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>63.8</td>
+<td>103.6</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -611,21 +923,21 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>541.5</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>3.9</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>22.2</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>144.1</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>13.3</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">288</th>
@@ -635,21 +947,21 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>27.7</td>
+<td>89.7</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>18.2</td>
+<td>67.4</td>
+<td>0.0</td>
+<td>59.4</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>5.3</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">289</th>
@@ -664,15 +976,15 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>0.0</td>
 <td>0.0</td>
 <td>...</td>
+<td>1.3</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>2.3</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>45.9</td>
 <td>0.0</td>
 </tr>
 <tr class="even">
@@ -680,116 +992,116 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <td>888-029</td>
 <td>asd1498</td>
 <td>0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
 <td>2.0</td>
+<td>0.0</td>
+<td>7.9</td>
+<td>168.8</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
 <td>...</td>
 <td>0.0</td>
+<td>1.1</td>
 <td>0.0</td>
+<td>2.1</td>
 <td>0.0</td>
+<td>5.1</td>
+<td>214.2</td>
+<td>12.8</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>12.7</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">291</th>
 <td>888-029</td>
 <td>asd1499</td>
 <td>0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
 <td>3.2</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>248.4</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
 <td>...</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
+<td>5.7</td>
+<td>29.4</td>
+<td>5.0</td>
+<td>156.8</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
+<td>10.3</td>
 </tr>
 </tbody>
 </table>
 
-<p>184 rows × 847 columns</p>
+<p>184 rows × 95 columns</p>
 </div>
 </div>
 </div>
 </section>
-<section id="dividing-training-and-testing" class="level3" data-number="2.4.2">
-<h3 data-number="2.4.2" class="anchored" data-anchor-id="dividing-training-and-testing"><span class="header-section-number">2.4.2</span> Dividing training and testing</h3>
+<section id="dividing-training-and-testing" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="dividing-training-and-testing"><span class="header-section-number">4.4.2</span> Dividing training and testing</h3>
 <p>The following cells divide the data into training and testing sets. In order to keep the data clean, samples collected from a single individual, the <code>IDnumber</code> column, are divided togeather to avoid data bleed.</p>
-<div id="08a51f32" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter IDnumber and Autism </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Y = autism, X = IDnumber</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter whole table on IDnumber</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># select real X values</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>temp_data <span class="op">=</span> adosRarefiedData.loc[:,[<span class="st">"IDnumber"</span>, <span class="st">"Autism"</span>]]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>temp_data <span class="op">=</span> temp_data.drop_duplicates()</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>X_temp <span class="op">=</span> temp_data.loc[:, <span class="st">"IDnumber"</span>]</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>y_temp <span class="op">=</span> temp_data.loc[:, <span class="st">"Autism"</span>]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>X_train_temp, X_test_temp, y_train_temp, y_test_temp <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    train_test_split(X_temp, y_temp, test_size<span class="op">=</span>trainingSplit,random_state<span class="op">=</span>randomState)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4bdaeee6" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter IDnumber and Autism </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Y = autism, X = IDnumber</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter whole table on IDnumber</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># select real X values</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>temp_data <span class="op">=</span> adosRarefiedData.loc[:,[<span class="st">"IDnumber"</span>, <span class="st">"Autism"</span>]]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>temp_data <span class="op">=</span> temp_data.drop_duplicates()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_temp <span class="op">=</span> temp_data.loc[:, <span class="st">"IDnumber"</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_temp <span class="op">=</span> temp_data.loc[:, <span class="st">"Autism"</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>X_train_temp, X_test_temp, y_train_temp, y_test_temp <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    train_test_split(X_temp, y_temp, test_size<span class="op">=</span>trainingSplit,random_state<span class="op">=</span>randomState)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="1b78e6d2" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_train_temp)]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_test_temp)]</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>not_in_y <span class="op">=</span> [<span class="st">"Autism"</span>, <span class="st">"IDnumber"</span>, <span class="st">"@SampleID"</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_data[<span class="st">"Autism"</span>].to_frame()</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_data.drop(columns <span class="op">=</span> not_in_y)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_data[<span class="st">"Autism"</span>].to_frame()</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test_data.drop(columns <span class="op">=</span> not_in_y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2163d745" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_train_temp)]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_test_temp)]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>not_in_y <span class="op">=</span> [<span class="st">"Autism"</span>, <span class="st">"IDnumber"</span>, <span class="st">"@SampleID"</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_data[<span class="st">"Autism"</span>].to_frame()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_data.drop(columns <span class="op">=</span> not_in_y)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_data[<span class="st">"Autism"</span>].to_frame()</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test_data.drop(columns <span class="op">=</span> not_in_y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="training" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="training"><span class="header-section-number">2.5</span> Training</h2>
+<section id="training" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="training"><span class="header-section-number">4.5</span> Training</h2>
 <p>The scaler rescales the features to fit between -1 and 1. This does not effect the outcome of the random forest but can help standardize inputs to increase efficiancy of training.</p>
-<div id="7fb826fc" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> scaler.fit_transform(X_train)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> scaler.transform(X_test)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y_test.to_numpy().ravel()</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.to_numpy().ravel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e58da895" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> scaler.transform(X_test)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y_test.to_numpy().ravel()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.to_numpy().ravel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>GridSearchCV</code> allows to train multiple Random Forest classifiers using various combinations of hyperparameters. The number of models trained is equal to <span class="math inline">\((\prod_{i=0}^{n}{|h_{i}|})*cv\)</span> where <span class="math inline">\(|h_{i}|\)</span> is the size of the param param_grid list and <span class="math inline">\(cv\)</span> is the cross validation number. <code>StratifiedKFold</code> divides the training data into n “folds”. Each pass of training selects one of these folds to act as a validation set to track the model’s training. More information can be found <a href="https://www.geeksforgeeks.org/machine-learning/k-fold-cross-validation-in-machine-learning/">here</a>. 5 is an arbitrary value.</p>
-<div id="e4e4f306" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span>estimators, random_state<span class="op">=</span>randomState)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>custom_recall <span class="op">=</span> make_scorer(recall_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>randomState)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> GridSearchCV(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    estimator<span class="op">=</span>classifier,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=</span>n_jobs,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    param_grid<span class="op">=</span>param_grid,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"recall"</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>search.fit(X_train, y_train)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>search.best_estimator_.get_params()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div id="e8120a52" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span>estimators, random_state<span class="op">=</span>randomState)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>custom_f1 <span class="op">=</span> make_scorer(f1_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>randomState)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> GridSearchCV(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    estimator<span class="op">=</span>classifier,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=</span>n_jobs,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    param_grid<span class="op">=</span>param_grid,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"recall"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>search.fit(X_train, y_train)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>search.best_estimator_.get_params()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>{'bootstrap': True,
  'ccp_alpha': 0.0,
  'class_weight': None,
- 'criterion': 'entropy',
+ 'criterion': 'gini',
  'max_depth': None,
  'max_features': None,
  'max_leaf_nodes': None,
@@ -807,85 +1119,85 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
  'warm_start': False}</code></pre>
 </div>
 </div>
-<section id="prediction" class="level3" data-number="2.5.1">
-<h3 data-number="2.5.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">2.5.1</span> Prediction</h3>
-<div id="33b485a2" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> search.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="prediction" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">4.5.1</span> Prediction</h3>
+<div id="c4494b35" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> search.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="evaluations" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="evaluations"><span class="header-section-number">2.6</span> Evaluations</h2>
+<section id="evaluations" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="evaluations"><span class="header-section-number">4.6</span> Evaluations</h2>
 <p>Precision and recall are inversly preportional. Both values are combined in the F_beta score. F_beta is the harmonic mean of precision and recall scaled using the <span class="math inline">\(\beta\)</span> value. <span class="math inline">\(\beta\)</span> determines if precision or recall is weighted more in the final score. <span class="math inline">\(\beta = 1\)</span> equally balances both metrics; <span class="math inline">\(\beta &gt; 1\)</span> increases recalls weight and <span class="math inline">\(\beta &lt; 1\)</span> increases precisions weight. In this case, <span class="math inline">\(\beta\)</span> is set to 1.</p>
-<div id="cell-heatmap" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>precision, recall, fscore, _ <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    precision_recall_fscore_support(y_test, y_pred, average<span class="op">=</span><span class="st">"binary"</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test, y_pred, labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">0</span>])</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>tickLabels <span class="op">=</span> [<span class="st">"Mild-Severe Concern"</span>, <span class="st">"No Concern"</span>]</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(conf_matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'g'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, cbar<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>tickLabels, yticklabels<span class="op">=</span>tickLabels)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Autism Predictions Confusion Matrix Heatmap'</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Labels'</span>)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Labels'</span>)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># McNemar's test</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>chi2_stat <span class="op">=</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">-</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">+</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>p_val <span class="op">=</span> chi2.sf(chi2_stat, df<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"F beta: </span><span class="sc">{</span>fscore<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Chi2 stat (McNemar's test): </span><span class="sc">{</span>chi2_stat<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Degrees of Freedom: </span><span class="sc">{</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"p-value: </span><span class="sc">{</span>p_val<span class="sc">:.2f}</span><span class="ss">"</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-heatmap" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>precision, recall, fscore, _ <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    precision_recall_fscore_support(y_test, y_pred, average<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test, y_pred, labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>tickLabels <span class="op">=</span> [<span class="st">"Mild-Severe Concern"</span>, <span class="st">"No Concern"</span>]</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(conf_matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'g'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, cbar<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>tickLabels, yticklabels<span class="op">=</span>tickLabels)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Autism Predictions Confusion Matrix Heatmap'</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Labels'</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Labels'</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># McNemar's test</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>chi2_stat <span class="op">=</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">-</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">+</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>p_val <span class="op">=</span> chi2.sf(chi2_stat, df<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"F beta: </span><span class="sc">{</span>fscore<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Chi2 stat (McNemar's test): </span><span class="sc">{</span>chi2_stat<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Degrees of Freedom: </span><span class="sc">{</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"p-value: </span><span class="sc">{</span>p_val<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="asd_concern_random_forest_with_grid_search_files/figure-html/heatmap-output-1.png" id="heatmap" width="655" height="523" class="figure-img"></p>
+<p><img src="asd_concern_random_forest_with_data_filtering_and_grid_search_files/figure-html/heatmap-output-1.png" id="heatmap" width="655" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Accuracy: 76.32%
-Precision: 0.00%
-Recall: 0.00%
-F beta: 0.00
-Chi2 stat (McNemar's test): 9.00
+<pre><code>Accuracy: 81.58%
+Precision: 100.00%
+Recall: 22.22%
+F beta: 0.36
+Chi2 stat (McNemar's test): 7.00
 Degrees of Freedom: 1
-p-value: 0.00</code></pre>
+p-value: 0.01</code></pre>
 </div>
 </div>
 <p>Here, we show the otu barcodes who most contributed to the best model’s predictions. A cut off of <span class="math inline">\(0.1\)</span> is used to filter the most significant OTUs/features.</p>
-<div id="cell-otus" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>best_model <span class="op">=</span> search.best_estimator_</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>feature_importances <span class="op">=</span> best_model.feature_importances_</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>important_indices <span class="op">=</span> np.where(feature_importances <span class="op">&gt;</span> <span class="fl">0.01</span>)[<span class="dv">0</span>]</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>filtered_feature_importance <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"features"</span>: rarefiedData.columns[important_indices],</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"importance"</span>: feature_importances[important_indices]</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.barh(filtered_feature_importance.features, filtered_feature_importance.importance)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature Importance'</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Feature Importance in Random Forest Classifier (above 1</span><span class="sc">% i</span><span class="st">mportance)'</span>)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-otus" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best_model <span class="op">=</span> search.best_estimator_</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>feature_importances <span class="op">=</span> best_model.feature_importances_</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>important_indices <span class="op">=</span> np.where(feature_importances <span class="op">&gt;</span> <span class="fl">0.01</span>)[<span class="dv">0</span>]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>filtered_feature_importance <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"features"</span>: rarefiedData.columns[important_indices],</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"importance"</span>: feature_importances[important_indices]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.barh(filtered_feature_importance.features, filtered_feature_importance.importance)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature Importance'</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Feature Importance in Random Forest Classifier (above 1</span><span class="sc">% i</span><span class="st">mportance)'</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="asd_concern_random_forest_with_grid_search_files/figure-html/otus-output-1.png" id="otus" width="847" height="449" class="figure-img"></p>
+<p><img src="asd_concern_random_forest_with_data_filtering_and_grid_search_files/figure-html/otus-output-1.png" id="otus" width="847" height="449" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1297,13 +1609,13 @@ p-value: 0.00</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./asd_concern_random_forest_with_pca_and_grid_search.html" class="pagination-link" aria-label="Random-Forest analysis of autism concern groups, features reduced with PCA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism concern groups, features reduced with PCA</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./asd_concern_random_forest_with_pca_and_grid_search.html" class="pagination-link" aria-label="Random-Forest analysis of autism concern groups, features reduced with PCA">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism concern groups, features reduced with PCA</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./asd_likelihood_random_forest_with_grid_search.html" class="pagination-link" aria-label="Basic Random-Forest analysis of autism likelihood groups">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism likelihood groups</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

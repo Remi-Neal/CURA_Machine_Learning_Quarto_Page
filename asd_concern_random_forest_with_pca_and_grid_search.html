@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./asd_likelihood_random_forest_with_grid_search.html" rel="next">
+<link href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html" rel="next">
 <link href="./asd_concern_random_forest_with_grid_search.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -202,20 +202,26 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./asd_likelihood_random_forest_with_grid_search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism likelihood groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism likelihood groups</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./asd_likelihood_random_forest_with_pca_and_grid_search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./figures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Figures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -290,7 +296,7 @@ window.Quarto = {
 </section>
 <section id="imports" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">3.2</span> Imports</h2>
-<div id="7dfac575" class="cell" data-execution_count="1">
+<div id="422d1b03" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -320,7 +326,7 @@ window.Quarto = {
 <section id="load-config" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="load-config"><span class="header-section-number">3.3.1</span> Load Config</h3>
 <p>Loading data into env</p>
-<div id="07d5cb2b" class="cell" data-execution_count="2">
+<div id="ec0f4caf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'config.yaml'</span>, mode<span class="op">=</span><span class="st">'r'</span>, encoding<span class="op">=</span><span class="va">None</span>) <span class="im">as</span> f:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    config_data <span class="op">=</span> yaml.safe_load(f)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -330,7 +336,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>hyperparameters <span class="op">=</span> config_data[<span class="st">"hyperparameters"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Yaml config data</p>
-<div id="d16dbb10" class="cell" data-execution_count="3">
+<div id="8d60c806" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>figure_export: true
 data:
@@ -362,7 +368,7 @@ param_grid:
 <section id="hyperparameters" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="hyperparameters"><span class="header-section-number">3.3.2</span> Hyperparameters</h3>
 <p>These hyperparameters are established in the <code>config.yaml</code> file but can be overriden using command line values using <code>-P variable:value -P othervariable:value</code> syntax.</p>
-<div id="29859462" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="4">
+<div id="acf0ef35" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># above tag allows parameters to be passed via cli</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>estimators <span class="op">=</span> hyperparameters[<span class="st">"estimators"</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n_components <span class="op">=</span> hyperparameters[<span class="st">"n_components"</span>]</span>
@@ -373,7 +379,7 @@ param_grid:
 </section>
 <section id="load-dataframes" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="load-dataframes"><span class="header-section-number">3.3.3</span> Load dataframes</h3>
-<div id="b7d98faa" class="cell" data-execution_count="5">
+<div id="6c3b41e9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rarefiedData <span class="op">=</span> pd.read_csv(data_sources[<span class="st">"rarefied_table"</span>], sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mapper <span class="op">=</span> pd.read_excel(data_sources[<span class="st">"mapper"</span>], sheet_name<span class="op">=</span><span class="st">"Mapper 2025-03-21"</span>)</span>
@@ -388,7 +394,7 @@ param_grid:
 <h2 data-number="3.4" class="anchored" data-anchor-id="create-training-and-testing-sets"><span class="header-section-number">3.4</span> Create training and testing sets</h2>
 <section id="combining-rarefied-and-asd-status" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="combining-rarefied-and-asd-status"><span class="header-section-number">3.4.1</span> Combining rarefied and asd status</h3>
-<div id="02980a73" class="cell" data-execution_count="6">
+<div id="f51a36a0" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adosClassification <span class="op">=</span> mapper.loc[:, [<span class="st">"IDnumber"</span>, <span class="st">"@SampleID"</span>, <span class="st">"ADOSClassification"</span>]]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filters out any potential stray IDs not part of out two groups</span></span>
@@ -402,7 +408,7 @@ param_grid:
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>autismClassification[<span class="st">"Autism"</span>] <span class="op">=</span> <span class="op">\</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    autismClassification[<span class="st">"ADOSClassification"</span>].transform(</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: <span class="st">"No"</span> <span class="cf">if</span> x <span class="op">==</span> <span class="st">"Minimal to No concern"</span> <span class="cf">else</span> <span class="st">"Yes"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: <span class="dv">0</span> <span class="cf">if</span> x <span class="op">==</span> <span class="st">"Minimal to No concern"</span> <span class="cf">else</span> <span class="dv">1</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>autismClassification <span class="op">=</span> autismClassification.drop(</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> [<span class="st">"ADOSClassification"</span>]</span>
@@ -415,7 +421,7 @@ param_grid:
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    right_index <span class="op">=</span> <span class="va">True</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>adosRarefiedData</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/0w/00j3lxtn6lq5n0jfhbsvrdd00000gn/T/ipykernel_6594/915451602.py:12: SettingWithCopyWarning: 
+<pre><code>/var/folders/0w/00j3lxtn6lq5n0jfhbsvrdd00000gn/T/ipykernel_80329/3272697402.py:12: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -458,7 +464,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">0</th>
 <td>777-001</td>
 <td>asd965</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -482,7 +488,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">1</th>
 <td>777-001</td>
 <td>asd966</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -506,7 +512,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">2</th>
 <td>777-001</td>
 <td>asd1132</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -530,7 +536,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">3</th>
 <td>777-001</td>
 <td>asd1133</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -554,7 +560,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">4</th>
 <td>777-001</td>
 <td>asd1534</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -602,7 +608,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">287</th>
 <td>888-029</td>
 <td>asd1407</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -626,7 +632,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">288</th>
 <td>888-029</td>
 <td>asd1134</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -650,7 +656,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">289</th>
 <td>888-029</td>
 <td>asd1135</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -674,7 +680,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">290</th>
 <td>888-029</td>
 <td>asd1498</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -698,7 +704,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <th data-quarto-table-cell-role="th">291</th>
 <td>888-029</td>
 <td>asd1499</td>
-<td>No</td>
+<td>0</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -729,7 +735,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <section id="dividing-training-and-testing" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="dividing-training-and-testing"><span class="header-section-number">3.4.2</span> Dividing training and testing</h3>
 <p>The following cells divide the data into training and testing sets. In order to keep the data clean, samples collected from a single individual, the <code>IDnumber</code> column, are divided togeather to avoid data bleed.</p>
-<div id="fbcb7468" class="cell" data-execution_count="7">
+<div id="20065e44" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter IDnumber and Autism </span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Y = autism, X = IDnumber</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filter whole table on IDnumber</span></span>
@@ -742,7 +748,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>X_train_temp, X_test_temp, y_train_temp, y_test_temp <span class="op">=</span> <span class="op">\</span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    train_test_split(X_temp, y_temp, test_size<span class="op">=</span>trainingSplit,random_state<span class="op">=</span>randomState)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="327ab480" class="cell" data-execution_count="8">
+<div id="51235751" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_train_temp)]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> adosRarefiedData[adosRarefiedData[<span class="st">"IDnumber"</span>].isin(X_test_temp)]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -758,7 +764,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <section id="training" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="training"><span class="header-section-number">3.5</span> Training</h2>
 <p>The scaler rescales the features to fit between -1 and 1. This does not effect the outcome of the random forest but can help standardize inputs to increase efficiancy of training.</p>
-<div id="3bdedd63" class="cell" data-execution_count="9">
+<div id="8746f309" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> scaler.fit_transform(X_train)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> scaler.transform(X_test)</span>
@@ -767,15 +773,15 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.to_numpy().ravel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>PCA for dimentionality reduction</p>
-<div id="1db37215" class="cell" data-execution_count="10">
+<div id="6bb7bfb0" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span>n_components)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X_train_pca <span class="op">=</span> pca.fit_transform(X_train)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_train_pca <span class="op">=</span> pd.DataFrame(X_train_pca)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>GridSearchCV</code> allows to train multiple Random Forest classifiers using various combinations of hyperparameters. The number of models trained is equal to <span class="math inline">\((\prod_{i=0}^{n}{|h_{i}|})*cv\)</span> where <span class="math inline">\(|h_{i}|\)</span> is the size of the param param_grid list and <span class="math inline">\(cv\)</span> is the cross validation number. <code>StratifiedKFold</code> divides the training data into n “folds”. Each pass of training selects one of these folds to act as a validation set to track the model’s training. More information can be found <a href="https://www.geeksforgeeks.org/machine-learning/k-fold-cross-validation-in-machine-learning/">here</a>. 5 is an arbitrary value.</p>
-<div id="a6771d90" class="cell" data-execution_count="11">
+<div id="f1bb2596" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span>estimators, random_state<span class="op">=</span>randomState)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>custom_f1 <span class="op">=</span> make_scorer(f1_score, pos_label<span class="op">=</span><span class="st">'Yes'</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>custom_f1 <span class="op">=</span> make_scorer(f1_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>randomState)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> GridSearchCV(</span>
@@ -783,14 +789,14 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=</span>n_jobs,</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    param_grid<span class="op">=</span>param_grid,</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>cv,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span>custom_f1)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">"recall"</span>)</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>search.fit(X_train_pca, y_train)</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>search.best_estimator_.get_params()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>{'bootstrap': True,
  'ccp_alpha': 0.0,
  'class_weight': 'balanced',
- 'criterion': 'entropy',
+ 'criterion': 'gini',
  'max_depth': None,
  'max_features': None,
  'max_leaf_nodes': None,
@@ -810,7 +816,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <section id="prediction" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="prediction"><span class="header-section-number">3.5.1</span> Prediction</h3>
-<div id="15eb947e" class="cell" data-execution_count="12">
+<div id="c4fa2a20" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>X_test_pca <span class="op">=</span> pca.transform(X_test)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> search.predict(X_test_pca)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -819,45 +825,42 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <section id="evaluations" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="evaluations"><span class="header-section-number">3.6</span> Evaluations</h2>
 <p>Precision and recall are inversly preportional. Both values are combined in the F_beta score. F_beta is the harmonic mean of precision and recall scaled using the <span class="math inline">\(\beta\)</span> value. <span class="math inline">\(\beta\)</span> determines if precision or recall is weighted more in the final score. <span class="math inline">\(\beta = 1\)</span> equally balances both metrics; <span class="math inline">\(\beta &gt; 1\)</span> increases recalls weight and <span class="math inline">\(\beta &lt; 1\)</span> increases precisions weight. In this case, <span class="math inline">\(\beta\)</span> is set to 1.</p>
-<div id="5d5ffe33" class="cell" data-execution_count="13">
+<div id="0e7d57bb" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>X_train_pca.columns <span class="op">=</span> [<span class="ss">f"PC</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> x <span class="kw">in</span> X_train_pca.columns]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-heatmap" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>precision, recall, fscore, _ <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    precision_recall_fscore_support(y_test, y_pred, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    precision_recall_fscore_support(y_test, y_pred, average<span class="op">=</span><span class="st">"binary"</span>)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Chi^2 Goodness of Fit</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>pred_counts <span class="op">=</span> np.array([<span class="bu">sum</span>(y_pred <span class="op">==</span> <span class="st">'No'</span>), <span class="bu">sum</span>(y_pred <span class="op">==</span> <span class="st">'Yes'</span>)])</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>null_counts <span class="op">=</span> np.array([<span class="bu">sum</span>(y_test <span class="op">==</span> <span class="st">'No'</span>), <span class="bu">sum</span>(y_test <span class="op">==</span> <span class="st">'Yes'</span>)])</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>tickLabels <span class="op">=</span> [<span class="st">"No Concern"</span>, <span class="st">"Mild-Severe Concern"</span>]</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>sns.heatmap(conf_matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'g'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, cbar<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>tickLabels, yticklabels<span class="op">=</span>tickLabels)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Autism Predictions Confusion Matrix Heatmap'</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Labels'</span>)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Labels'</span>)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># McNemar's test</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>chi2_stat <span class="op">=</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">-</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">+</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>p_val <span class="op">=</span> chi2.sf(chi2_stat, df<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"F beta: </span><span class="sc">{</span>fscore<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Chi2 stat (McNemar's test): </span><span class="sc">{</span>chi2_stat<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Degrees of Freedom: </span><span class="sc">{</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"p-value: </span><span class="sc">{</span>p_val<span class="sc">:.2f}</span><span class="ss">"</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test, y_pred, labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>tickLabels <span class="op">=</span> [<span class="st">"Mild-Severe Concern"</span>, <span class="st">"No Concern"</span>]</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(conf_matrix, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'g'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, cbar<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>tickLabels, yticklabels<span class="op">=</span>tickLabels)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Autism Predictions Confusion Matrix Heatmap'</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Labels'</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Labels'</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co"># McNemar's test</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>chi2_stat <span class="op">=</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">-</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (conf_matrix[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">+</span> conf_matrix[<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>p_val <span class="op">=</span> chi2.sf(chi2_stat, df<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"F beta: </span><span class="sc">{</span>fscore<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Chi2 stat (McNemar's test): </span><span class="sc">{</span>chi2_stat<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Degrees of Freedom: </span><span class="sc">{</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">\</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"p-value: </span><span class="sc">{</span>p_val<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -867,9 +870,9 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy: 68.42%
-Precision: 62.55%
-Recall: 68.42%
-F beta: 0.65
+Precision: 20.00%
+Recall: 11.11%
+F beta: 0.14
 Chi2 stat (McNemar's test): 1.33
 Degrees of Freedom: 1
 p-value: 0.25</code></pre>
@@ -1311,8 +1314,8 @@ p-value: 0.25</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./asd_likelihood_random_forest_with_grid_search.html" class="pagination-link" aria-label="Basic Random-Forest analysis of autism likelihood groups">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Basic Random-Forest analysis of autism likelihood groups</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./asd_concern_random_forest_with_data_filtering_and_grid_search.html" class="pagination-link" aria-label="Random-Forest analysis of autism likelihood groups, features reduced with PCA">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random-Forest analysis of autism likelihood groups, features reduced with PCA</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
